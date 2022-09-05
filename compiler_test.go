@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
@@ -6,9 +6,12 @@ import (
 	"reflect"
 	"testing"
 
+	samplev1 "github.com/caraml-dev/protopath/internal/gen/sample/v1"
+
 	upiV1 "github.com/caraml-dev/universal-prediction-interface/gen/go/grpc/caraml/upi/v1"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/protobuf/proto"
 )
 
 func TestCompiler_NewJsonPathCompiler(t *testing.T) {
@@ -22,7 +25,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 	tests := []struct {
 		name        string
 		args        args
-		want        *Compiler
+		want        *Compiled
 		expectedErr error
 	}{
 		{
@@ -37,7 +40,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -54,7 +57,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -76,7 +79,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1[*]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1[*]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -103,7 +106,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.[1,2,3]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.[1,2,3]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -132,7 +135,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[1:3]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[1:3]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -167,7 +170,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[1:3]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[1:3]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -195,7 +198,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[1:]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[1:]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -222,7 +225,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[:3]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[:3]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -249,7 +252,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[:]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[:]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -274,7 +277,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[@.length-1]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[@.length-1]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -301,7 +304,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[?(@.val)]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[?(@.val)]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -332,7 +335,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[?(@.val > 2.2)]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[?(@.val > 2.2)]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -372,7 +375,7 @@ func TestCompiler_NewJsonPathCompiler(t *testing.T) {
 			args: args{
 				jsonpath: "$.field1.field2[?(@.val > 2.2 || $.field3 < $.field4)]",
 			},
-			want: &Compiler{
+			want: &Compiled{
 				Path: "$.field1.field2[?(@.val > 2.2 || $.field3 < $.field4)]",
 				Operations: []Operation{
 					&FieldAccessOperation{
@@ -440,8 +443,8 @@ func TestCompiler_Lookup(t *testing.T) {
 	tests := []struct {
 		name        string
 		path        string
-		obj         interface{}
-		want        interface{}
+		obj         proto.Message
+		want        any
 		expectedErr error
 	}{
 		{
@@ -513,7 +516,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				[]*upiV1.NamedValue{
 					{
 						Name:        "rating",
@@ -582,7 +585,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				&upiV1.NamedValue{
 					Name:        "rating",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
@@ -647,7 +650,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				&upiV1.NamedValue{
 					Name:        "rating",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
@@ -701,7 +704,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				&upiV1.NamedValue{
 					Name:        "acceptance_rate",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
@@ -755,7 +758,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				float64(4.2),
 				float64(4.4),
 			},
@@ -801,7 +804,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				&upiV1.NamedValue{
 					Name:        "rating",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
@@ -855,7 +858,7 @@ func TestCompiler_Lookup(t *testing.T) {
 					},
 				},
 			},
-			want: []interface{}{
+			want: []any{
 				&upiV1.NamedValue{
 					Name:        "rating",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
@@ -865,6 +868,45 @@ func TestCompiler_Lookup(t *testing.T) {
 					Name:        "rating",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
 					DoubleValue: float64(4.4),
+				},
+			},
+		},
+		{
+			name: "ssss",
+			path: "$.line_items[?(@.is_promo==true)]",
+			obj: &samplev1.Order{
+				OrderId: "1",
+				LineItems: []*samplev1.LineItem{
+					{
+						LineItemId: "1",
+						BasePrice:  1000,
+						Markup:     0.0,
+						Quantity:   1,
+						IsPromo:    false,
+					},
+					{
+						LineItemId: "2",
+						BasePrice:  2000,
+						Markup:     0.0,
+						Quantity:   2,
+						IsPromo:    false,
+					},
+					{
+						LineItemId: "3",
+						BasePrice:  3000,
+						Markup:     0.2,
+						Quantity:   3,
+						IsPromo:    true,
+					},
+				},
+			},
+			want: []any{
+				&samplev1.LineItem{
+					LineItemId: "3",
+					BasePrice:  3000,
+					Markup:     0.2,
+					Quantity:   3,
+					IsPromo:    true,
 				},
 			},
 		},

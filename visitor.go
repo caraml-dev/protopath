@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/caraml-dev/jsonpath/parser"
+	"github.com/caraml-dev/protopath/parser"
 )
 
 // JsonPathVisitor responsible to visit the tree parser
@@ -17,6 +17,7 @@ type JsonPathVisitor struct {
 	comparatorMapping map[int]operator
 }
 
+// NewJsonPathVisitor creates JsonPathVisitor to traverse all the parsed syntax into operation
 func NewJsonPathVisitor(fieldGetter FieldGetter) *JsonPathVisitor {
 	comparatorMapping := map[int]operator{
 		parser.JsonPathLexerEQ:         eq,
@@ -337,11 +338,13 @@ func (j *JsonPathVisitor) visitQueryWithComparatorContext(ctx *parser.QueryWithC
 	return filterOp, nil
 }
 
-func (j *JsonPathVisitor) getQueryFieldValueOperations(ctx antlr.Tree, ops []Operation) (interface{}, error) {
+func (j *JsonPathVisitor) getQueryFieldValueOperations(ctx antlr.Tree, ops []Operation) (any, error) {
 	switch qFieldVal := ctx.(type) {
 	case *parser.QueryFieldStringValueContext:
 		// hack remove ' character
 		return strings.Trim(qFieldVal.GetText(), "'"), nil
+	case *parser.QueryFieldBoolValueContext:
+		return toBool(qFieldVal.GetText())
 	case *parser.QueryFieldValueRootAccessContext:
 		rootCtx, ok := qFieldVal.Root().(*parser.RootContext)
 		if !ok {
@@ -363,7 +366,7 @@ func (j *JsonPathVisitor) getQueryFieldValueOperations(ctx antlr.Tree, ops []Ope
 		}
 		return childOps, nil
 	case *parser.QueryFieldDoubleValueContext:
-		doubleVal, err := strconv.ParseFloat(qFieldVal.GetText(), 64)
+		doubleVal, err := toFloat64(qFieldVal.GetText())
 		if err != nil {
 			return nil, err
 		}
@@ -373,7 +376,7 @@ func (j *JsonPathVisitor) getQueryFieldValueOperations(ctx antlr.Tree, ops []Ope
 	}
 }
 
-func (j *JsonPathVisitor) visitQueryExistenceContext(ctx *parser.QueryExistenceContext, ops []Operation) (interface{}, error) {
+func (j *JsonPathVisitor) visitQueryExistenceContext(ctx *parser.QueryExistenceContext, ops []Operation) (any, error) {
 	for _, child := range ctx.GetChildren() {
 		return j.getQueryFieldValueOperations(child, ops)
 	}

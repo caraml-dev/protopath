@@ -34,97 +34,100 @@ func jsonpathParserInit() {
 	staticData := &jsonpathParserStaticData
 	staticData.literalNames = []string{
 		"", "'.'", "'[*]'", "'['", "']'", "'[?('", "')]'", "'[@.length-'", "'[:]'",
-		"','", "", "", "", "", "':'", "'$.'", "'@.'", "'>'", "'>='", "'<'",
-		"'<='", "'=='", "'!='", "'&&'", "'||'",
+		"','", "'true'", "'false'", "", "", "", "", "':'", "'$.'", "'@.'", "'>'",
+		"'>='", "'<'", "'<='", "'=='", "'!='", "'&&'", "'||'",
 	}
 	staticData.symbolicNames = []string{
-		"", "", "", "", "", "", "", "", "", "", "IDENTIFIER", "STRING", "INT",
-		"WS", "COLON", "ROOT_IDENTIFIER", "LOCAL_IDENTIFIER", "GREATER", "GREATER_EQ",
-		"LESS", "LESS_EQ", "EQ", "NEQ", "AND", "OR",
+		"", "", "", "", "", "", "", "", "", "", "", "", "IDENTIFIER", "STRING",
+		"INT", "WS", "COLON", "ROOT_IDENTIFIER", "LOCAL_IDENTIFIER", "GREATER",
+		"GREATER_EQ", "LESS", "LESS_EQ", "EQ", "NEQ", "AND", "OR",
 	}
 	staticData.ruleNames = []string{
 		"jsonpath", "root", "fieldAccess", "localFieldAccess", "arrayQualifier",
 		"arrayRange", "intSequence", "queryFieldValue", "filterOperation", "queryExpr",
-		"dbl",
+		"dbl", "bool_type",
 	}
 	staticData.predictionContextCache = antlr.NewPredictionContextCache()
 	staticData.serializedATN = []int32{
-		4, 1, 24, 172, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
+		4, 1, 26, 177, 2, 0, 7, 0, 2, 1, 7, 1, 2, 2, 7, 2, 2, 3, 7, 3, 2, 4, 7,
 		4, 2, 5, 7, 5, 2, 6, 7, 6, 2, 7, 7, 7, 2, 8, 7, 8, 2, 9, 7, 9, 2, 10, 7,
-		10, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 32, 8,
-		1, 11, 1, 12, 1, 33, 5, 1, 36, 8, 1, 10, 1, 12, 1, 39, 9, 1, 1, 2, 1, 2,
-		1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 47, 8, 2, 1, 3, 1, 3, 1, 3, 1, 3, 1, 3, 1,
-		3, 1, 3, 4, 3, 56, 8, 3, 11, 3, 12, 3, 57, 5, 3, 60, 8, 3, 10, 3, 12, 3,
-		63, 9, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
-		4, 1, 4, 1, 4, 3, 4, 78, 8, 4, 1, 5, 1, 5, 1, 5, 4, 5, 83, 8, 5, 11, 5,
-		12, 5, 84, 1, 5, 1, 5, 4, 5, 89, 8, 5, 11, 5, 12, 5, 90, 1, 5, 1, 5, 1,
-		5, 1, 5, 4, 5, 97, 8, 5, 11, 5, 12, 5, 98, 1, 5, 1, 5, 1, 5, 4, 5, 104,
-		8, 5, 11, 5, 12, 5, 105, 1, 5, 1, 5, 3, 5, 110, 8, 5, 1, 6, 1, 6, 1, 6,
-		5, 6, 115, 8, 6, 10, 6, 12, 6, 118, 9, 6, 1, 7, 1, 7, 1, 7, 1, 7, 3, 7,
-		124, 8, 7, 1, 8, 1, 8, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 1, 9, 3, 9, 134, 8,
-		9, 1, 9, 1, 9, 1, 9, 4, 9, 139, 8, 9, 11, 9, 12, 9, 140, 5, 9, 143, 8,
-		9, 10, 9, 12, 9, 146, 9, 9, 1, 10, 4, 10, 149, 8, 10, 11, 10, 12, 10, 150,
-		1, 10, 1, 10, 4, 10, 155, 8, 10, 11, 10, 12, 10, 156, 1, 10, 1, 10, 4,
-		10, 161, 8, 10, 11, 10, 12, 10, 162, 1, 10, 4, 10, 166, 8, 10, 11, 10,
-		12, 10, 167, 3, 10, 170, 8, 10, 1, 10, 0, 3, 2, 6, 18, 11, 0, 2, 4, 6,
-		8, 10, 12, 14, 16, 18, 20, 0, 2, 1, 0, 17, 22, 1, 0, 23, 24, 190, 0, 22,
-		1, 0, 0, 0, 2, 24, 1, 0, 0, 0, 4, 46, 1, 0, 0, 0, 6, 48, 1, 0, 0, 0, 8,
-		77, 1, 0, 0, 0, 10, 109, 1, 0, 0, 0, 12, 111, 1, 0, 0, 0, 14, 123, 1, 0,
-		0, 0, 16, 125, 1, 0, 0, 0, 18, 133, 1, 0, 0, 0, 20, 169, 1, 0, 0, 0, 22,
-		23, 3, 2, 1, 0, 23, 1, 1, 0, 0, 0, 24, 25, 6, 1, -1, 0, 25, 26, 5, 15,
-		0, 0, 26, 27, 3, 4, 2, 0, 27, 37, 1, 0, 0, 0, 28, 31, 10, 2, 0, 0, 29,
-		30, 5, 1, 0, 0, 30, 32, 3, 4, 2, 0, 31, 29, 1, 0, 0, 0, 32, 33, 1, 0, 0,
-		0, 33, 31, 1, 0, 0, 0, 33, 34, 1, 0, 0, 0, 34, 36, 1, 0, 0, 0, 35, 28,
-		1, 0, 0, 0, 36, 39, 1, 0, 0, 0, 37, 35, 1, 0, 0, 0, 37, 38, 1, 0, 0, 0,
-		38, 3, 1, 0, 0, 0, 39, 37, 1, 0, 0, 0, 40, 41, 5, 10, 0, 0, 41, 47, 3,
-		8, 4, 0, 42, 43, 5, 10, 0, 0, 43, 44, 5, 1, 0, 0, 44, 47, 3, 8, 4, 0, 45,
-		47, 5, 10, 0, 0, 46, 40, 1, 0, 0, 0, 46, 42, 1, 0, 0, 0, 46, 45, 1, 0,
-		0, 0, 47, 5, 1, 0, 0, 0, 48, 49, 6, 3, -1, 0, 49, 50, 5, 16, 0, 0, 50,
-		51, 3, 4, 2, 0, 51, 61, 1, 0, 0, 0, 52, 55, 10, 1, 0, 0, 53, 54, 5, 1,
-		0, 0, 54, 56, 3, 4, 2, 0, 55, 53, 1, 0, 0, 0, 56, 57, 1, 0, 0, 0, 57, 55,
-		1, 0, 0, 0, 57, 58, 1, 0, 0, 0, 58, 60, 1, 0, 0, 0, 59, 52, 1, 0, 0, 0,
-		60, 63, 1, 0, 0, 0, 61, 59, 1, 0, 0, 0, 61, 62, 1, 0, 0, 0, 62, 7, 1, 0,
-		0, 0, 63, 61, 1, 0, 0, 0, 64, 78, 5, 2, 0, 0, 65, 66, 5, 3, 0, 0, 66, 67,
-		3, 12, 6, 0, 67, 68, 5, 4, 0, 0, 68, 78, 1, 0, 0, 0, 69, 78, 3, 10, 5,
-		0, 70, 71, 5, 5, 0, 0, 71, 72, 3, 16, 8, 0, 72, 73, 5, 6, 0, 0, 73, 78,
-		1, 0, 0, 0, 74, 75, 5, 7, 0, 0, 75, 76, 5, 12, 0, 0, 76, 78, 5, 4, 0, 0,
-		77, 64, 1, 0, 0, 0, 77, 65, 1, 0, 0, 0, 77, 69, 1, 0, 0, 0, 77, 70, 1,
-		0, 0, 0, 77, 74, 1, 0, 0, 0, 78, 9, 1, 0, 0, 0, 79, 110, 5, 8, 0, 0, 80,
-		82, 5, 3, 0, 0, 81, 83, 5, 12, 0, 0, 82, 81, 1, 0, 0, 0, 83, 84, 1, 0,
-		0, 0, 84, 82, 1, 0, 0, 0, 84, 85, 1, 0, 0, 0, 85, 86, 1, 0, 0, 0, 86, 88,
-		5, 14, 0, 0, 87, 89, 5, 12, 0, 0, 88, 87, 1, 0, 0, 0, 89, 90, 1, 0, 0,
-		0, 90, 88, 1, 0, 0, 0, 90, 91, 1, 0, 0, 0, 91, 92, 1, 0, 0, 0, 92, 110,
-		5, 4, 0, 0, 93, 94, 5, 3, 0, 0, 94, 96, 5, 14, 0, 0, 95, 97, 5, 12, 0,
-		0, 96, 95, 1, 0, 0, 0, 97, 98, 1, 0, 0, 0, 98, 96, 1, 0, 0, 0, 98, 99,
-		1, 0, 0, 0, 99, 100, 1, 0, 0, 0, 100, 110, 5, 4, 0, 0, 101, 103, 5, 3,
-		0, 0, 102, 104, 5, 12, 0, 0, 103, 102, 1, 0, 0, 0, 104, 105, 1, 0, 0, 0,
-		105, 103, 1, 0, 0, 0, 105, 106, 1, 0, 0, 0, 106, 107, 1, 0, 0, 0, 107,
-		108, 5, 14, 0, 0, 108, 110, 5, 4, 0, 0, 109, 79, 1, 0, 0, 0, 109, 80, 1,
-		0, 0, 0, 109, 93, 1, 0, 0, 0, 109, 101, 1, 0, 0, 0, 110, 11, 1, 0, 0, 0,
-		111, 116, 5, 12, 0, 0, 112, 113, 5, 9, 0, 0, 113, 115, 5, 12, 0, 0, 114,
-		112, 1, 0, 0, 0, 115, 118, 1, 0, 0, 0, 116, 114, 1, 0, 0, 0, 116, 117,
-		1, 0, 0, 0, 117, 13, 1, 0, 0, 0, 118, 116, 1, 0, 0, 0, 119, 124, 3, 6,
-		3, 0, 120, 124, 3, 2, 1, 0, 121, 124, 3, 20, 10, 0, 122, 124, 5, 11, 0,
-		0, 123, 119, 1, 0, 0, 0, 123, 120, 1, 0, 0, 0, 123, 121, 1, 0, 0, 0, 123,
-		122, 1, 0, 0, 0, 124, 15, 1, 0, 0, 0, 125, 126, 3, 18, 9, 0, 126, 17, 1,
-		0, 0, 0, 127, 128, 6, 9, -1, 0, 128, 134, 3, 14, 7, 0, 129, 130, 3, 14,
-		7, 0, 130, 131, 7, 0, 0, 0, 131, 132, 3, 14, 7, 0, 132, 134, 1, 0, 0, 0,
-		133, 127, 1, 0, 0, 0, 133, 129, 1, 0, 0, 0, 134, 144, 1, 0, 0, 0, 135,
-		138, 10, 3, 0, 0, 136, 137, 7, 1, 0, 0, 137, 139, 3, 18, 9, 0, 138, 136,
-		1, 0, 0, 0, 139, 140, 1, 0, 0, 0, 140, 138, 1, 0, 0, 0, 140, 141, 1, 0,
-		0, 0, 141, 143, 1, 0, 0, 0, 142, 135, 1, 0, 0, 0, 143, 146, 1, 0, 0, 0,
-		144, 142, 1, 0, 0, 0, 144, 145, 1, 0, 0, 0, 145, 19, 1, 0, 0, 0, 146, 144,
-		1, 0, 0, 0, 147, 149, 5, 12, 0, 0, 148, 147, 1, 0, 0, 0, 149, 150, 1, 0,
-		0, 0, 150, 148, 1, 0, 0, 0, 150, 151, 1, 0, 0, 0, 151, 152, 1, 0, 0, 0,
-		152, 154, 5, 1, 0, 0, 153, 155, 5, 12, 0, 0, 154, 153, 1, 0, 0, 0, 155,
-		156, 1, 0, 0, 0, 156, 154, 1, 0, 0, 0, 156, 157, 1, 0, 0, 0, 157, 170,
-		1, 0, 0, 0, 158, 160, 5, 1, 0, 0, 159, 161, 5, 12, 0, 0, 160, 159, 1, 0,
-		0, 0, 161, 162, 1, 0, 0, 0, 162, 160, 1, 0, 0, 0, 162, 163, 1, 0, 0, 0,
-		163, 170, 1, 0, 0, 0, 164, 166, 5, 12, 0, 0, 165, 164, 1, 0, 0, 0, 166,
-		167, 1, 0, 0, 0, 167, 165, 1, 0, 0, 0, 167, 168, 1, 0, 0, 0, 168, 170,
-		1, 0, 0, 0, 169, 148, 1, 0, 0, 0, 169, 158, 1, 0, 0, 0, 169, 165, 1, 0,
-		0, 0, 170, 21, 1, 0, 0, 0, 21, 33, 37, 46, 57, 61, 77, 84, 90, 98, 105,
-		109, 116, 123, 133, 140, 144, 150, 156, 162, 167, 169,
+		10, 2, 11, 7, 11, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+		4, 1, 34, 8, 1, 11, 1, 12, 1, 35, 5, 1, 38, 8, 1, 10, 1, 12, 1, 41, 9,
+		1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 3, 2, 49, 8, 2, 1, 3, 1, 3, 1, 3,
+		1, 3, 1, 3, 1, 3, 1, 3, 4, 3, 58, 8, 3, 11, 3, 12, 3, 59, 5, 3, 62, 8,
+		3, 10, 3, 12, 3, 65, 9, 3, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1,
+		4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 3, 4, 80, 8, 4, 1, 5, 1, 5, 1, 5, 4, 5,
+		85, 8, 5, 11, 5, 12, 5, 86, 1, 5, 1, 5, 4, 5, 91, 8, 5, 11, 5, 12, 5, 92,
+		1, 5, 1, 5, 1, 5, 1, 5, 4, 5, 99, 8, 5, 11, 5, 12, 5, 100, 1, 5, 1, 5,
+		1, 5, 4, 5, 106, 8, 5, 11, 5, 12, 5, 107, 1, 5, 1, 5, 3, 5, 112, 8, 5,
+		1, 6, 1, 6, 1, 6, 5, 6, 117, 8, 6, 10, 6, 12, 6, 120, 9, 6, 1, 7, 1, 7,
+		1, 7, 1, 7, 1, 7, 3, 7, 127, 8, 7, 1, 8, 1, 8, 1, 9, 1, 9, 1, 9, 1, 9,
+		1, 9, 1, 9, 3, 9, 137, 8, 9, 1, 9, 1, 9, 1, 9, 4, 9, 142, 8, 9, 11, 9,
+		12, 9, 143, 5, 9, 146, 8, 9, 10, 9, 12, 9, 149, 9, 9, 1, 10, 4, 10, 152,
+		8, 10, 11, 10, 12, 10, 153, 1, 10, 1, 10, 4, 10, 158, 8, 10, 11, 10, 12,
+		10, 159, 1, 10, 1, 10, 4, 10, 164, 8, 10, 11, 10, 12, 10, 165, 1, 10, 4,
+		10, 169, 8, 10, 11, 10, 12, 10, 170, 3, 10, 173, 8, 10, 1, 11, 1, 11, 1,
+		11, 0, 3, 2, 6, 18, 12, 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 0, 3,
+		1, 0, 19, 24, 1, 0, 25, 26, 1, 0, 10, 11, 195, 0, 24, 1, 0, 0, 0, 2, 26,
+		1, 0, 0, 0, 4, 48, 1, 0, 0, 0, 6, 50, 1, 0, 0, 0, 8, 79, 1, 0, 0, 0, 10,
+		111, 1, 0, 0, 0, 12, 113, 1, 0, 0, 0, 14, 126, 1, 0, 0, 0, 16, 128, 1,
+		0, 0, 0, 18, 136, 1, 0, 0, 0, 20, 172, 1, 0, 0, 0, 22, 174, 1, 0, 0, 0,
+		24, 25, 3, 2, 1, 0, 25, 1, 1, 0, 0, 0, 26, 27, 6, 1, -1, 0, 27, 28, 5,
+		17, 0, 0, 28, 29, 3, 4, 2, 0, 29, 39, 1, 0, 0, 0, 30, 33, 10, 2, 0, 0,
+		31, 32, 5, 1, 0, 0, 32, 34, 3, 4, 2, 0, 33, 31, 1, 0, 0, 0, 34, 35, 1,
+		0, 0, 0, 35, 33, 1, 0, 0, 0, 35, 36, 1, 0, 0, 0, 36, 38, 1, 0, 0, 0, 37,
+		30, 1, 0, 0, 0, 38, 41, 1, 0, 0, 0, 39, 37, 1, 0, 0, 0, 39, 40, 1, 0, 0,
+		0, 40, 3, 1, 0, 0, 0, 41, 39, 1, 0, 0, 0, 42, 43, 5, 12, 0, 0, 43, 49,
+		3, 8, 4, 0, 44, 45, 5, 12, 0, 0, 45, 46, 5, 1, 0, 0, 46, 49, 3, 8, 4, 0,
+		47, 49, 5, 12, 0, 0, 48, 42, 1, 0, 0, 0, 48, 44, 1, 0, 0, 0, 48, 47, 1,
+		0, 0, 0, 49, 5, 1, 0, 0, 0, 50, 51, 6, 3, -1, 0, 51, 52, 5, 18, 0, 0, 52,
+		53, 3, 4, 2, 0, 53, 63, 1, 0, 0, 0, 54, 57, 10, 1, 0, 0, 55, 56, 5, 1,
+		0, 0, 56, 58, 3, 4, 2, 0, 57, 55, 1, 0, 0, 0, 58, 59, 1, 0, 0, 0, 59, 57,
+		1, 0, 0, 0, 59, 60, 1, 0, 0, 0, 60, 62, 1, 0, 0, 0, 61, 54, 1, 0, 0, 0,
+		62, 65, 1, 0, 0, 0, 63, 61, 1, 0, 0, 0, 63, 64, 1, 0, 0, 0, 64, 7, 1, 0,
+		0, 0, 65, 63, 1, 0, 0, 0, 66, 80, 5, 2, 0, 0, 67, 68, 5, 3, 0, 0, 68, 69,
+		3, 12, 6, 0, 69, 70, 5, 4, 0, 0, 70, 80, 1, 0, 0, 0, 71, 80, 3, 10, 5,
+		0, 72, 73, 5, 5, 0, 0, 73, 74, 3, 16, 8, 0, 74, 75, 5, 6, 0, 0, 75, 80,
+		1, 0, 0, 0, 76, 77, 5, 7, 0, 0, 77, 78, 5, 14, 0, 0, 78, 80, 5, 4, 0, 0,
+		79, 66, 1, 0, 0, 0, 79, 67, 1, 0, 0, 0, 79, 71, 1, 0, 0, 0, 79, 72, 1,
+		0, 0, 0, 79, 76, 1, 0, 0, 0, 80, 9, 1, 0, 0, 0, 81, 112, 5, 8, 0, 0, 82,
+		84, 5, 3, 0, 0, 83, 85, 5, 14, 0, 0, 84, 83, 1, 0, 0, 0, 85, 86, 1, 0,
+		0, 0, 86, 84, 1, 0, 0, 0, 86, 87, 1, 0, 0, 0, 87, 88, 1, 0, 0, 0, 88, 90,
+		5, 16, 0, 0, 89, 91, 5, 14, 0, 0, 90, 89, 1, 0, 0, 0, 91, 92, 1, 0, 0,
+		0, 92, 90, 1, 0, 0, 0, 92, 93, 1, 0, 0, 0, 93, 94, 1, 0, 0, 0, 94, 112,
+		5, 4, 0, 0, 95, 96, 5, 3, 0, 0, 96, 98, 5, 16, 0, 0, 97, 99, 5, 14, 0,
+		0, 98, 97, 1, 0, 0, 0, 99, 100, 1, 0, 0, 0, 100, 98, 1, 0, 0, 0, 100, 101,
+		1, 0, 0, 0, 101, 102, 1, 0, 0, 0, 102, 112, 5, 4, 0, 0, 103, 105, 5, 3,
+		0, 0, 104, 106, 5, 14, 0, 0, 105, 104, 1, 0, 0, 0, 106, 107, 1, 0, 0, 0,
+		107, 105, 1, 0, 0, 0, 107, 108, 1, 0, 0, 0, 108, 109, 1, 0, 0, 0, 109,
+		110, 5, 16, 0, 0, 110, 112, 5, 4, 0, 0, 111, 81, 1, 0, 0, 0, 111, 82, 1,
+		0, 0, 0, 111, 95, 1, 0, 0, 0, 111, 103, 1, 0, 0, 0, 112, 11, 1, 0, 0, 0,
+		113, 118, 5, 14, 0, 0, 114, 115, 5, 9, 0, 0, 115, 117, 5, 14, 0, 0, 116,
+		114, 1, 0, 0, 0, 117, 120, 1, 0, 0, 0, 118, 116, 1, 0, 0, 0, 118, 119,
+		1, 0, 0, 0, 119, 13, 1, 0, 0, 0, 120, 118, 1, 0, 0, 0, 121, 127, 3, 6,
+		3, 0, 122, 127, 3, 2, 1, 0, 123, 127, 3, 20, 10, 0, 124, 127, 5, 13, 0,
+		0, 125, 127, 3, 22, 11, 0, 126, 121, 1, 0, 0, 0, 126, 122, 1, 0, 0, 0,
+		126, 123, 1, 0, 0, 0, 126, 124, 1, 0, 0, 0, 126, 125, 1, 0, 0, 0, 127,
+		15, 1, 0, 0, 0, 128, 129, 3, 18, 9, 0, 129, 17, 1, 0, 0, 0, 130, 131, 6,
+		9, -1, 0, 131, 137, 3, 14, 7, 0, 132, 133, 3, 14, 7, 0, 133, 134, 7, 0,
+		0, 0, 134, 135, 3, 14, 7, 0, 135, 137, 1, 0, 0, 0, 136, 130, 1, 0, 0, 0,
+		136, 132, 1, 0, 0, 0, 137, 147, 1, 0, 0, 0, 138, 141, 10, 3, 0, 0, 139,
+		140, 7, 1, 0, 0, 140, 142, 3, 18, 9, 0, 141, 139, 1, 0, 0, 0, 142, 143,
+		1, 0, 0, 0, 143, 141, 1, 0, 0, 0, 143, 144, 1, 0, 0, 0, 144, 146, 1, 0,
+		0, 0, 145, 138, 1, 0, 0, 0, 146, 149, 1, 0, 0, 0, 147, 145, 1, 0, 0, 0,
+		147, 148, 1, 0, 0, 0, 148, 19, 1, 0, 0, 0, 149, 147, 1, 0, 0, 0, 150, 152,
+		5, 14, 0, 0, 151, 150, 1, 0, 0, 0, 152, 153, 1, 0, 0, 0, 153, 151, 1, 0,
+		0, 0, 153, 154, 1, 0, 0, 0, 154, 155, 1, 0, 0, 0, 155, 157, 5, 1, 0, 0,
+		156, 158, 5, 14, 0, 0, 157, 156, 1, 0, 0, 0, 158, 159, 1, 0, 0, 0, 159,
+		157, 1, 0, 0, 0, 159, 160, 1, 0, 0, 0, 160, 173, 1, 0, 0, 0, 161, 163,
+		5, 1, 0, 0, 162, 164, 5, 14, 0, 0, 163, 162, 1, 0, 0, 0, 164, 165, 1, 0,
+		0, 0, 165, 163, 1, 0, 0, 0, 165, 166, 1, 0, 0, 0, 166, 173, 1, 0, 0, 0,
+		167, 169, 5, 14, 0, 0, 168, 167, 1, 0, 0, 0, 169, 170, 1, 0, 0, 0, 170,
+		168, 1, 0, 0, 0, 170, 171, 1, 0, 0, 0, 171, 173, 1, 0, 0, 0, 172, 151,
+		1, 0, 0, 0, 172, 161, 1, 0, 0, 0, 172, 168, 1, 0, 0, 0, 173, 21, 1, 0,
+		0, 0, 174, 175, 7, 2, 0, 0, 175, 23, 1, 0, 0, 0, 21, 35, 39, 48, 59, 63,
+		79, 86, 92, 100, 107, 111, 118, 126, 136, 143, 147, 153, 159, 165, 170,
+		172,
 	}
 	deserializer := antlr.NewATNDeserializer(nil)
 	staticData.atn = deserializer.Deserialize(staticData.serializedATN)
@@ -172,21 +175,23 @@ const (
 	JsonPathParserT__6             = 7
 	JsonPathParserT__7             = 8
 	JsonPathParserT__8             = 9
-	JsonPathParserIDENTIFIER       = 10
-	JsonPathParserSTRING           = 11
-	JsonPathParserINT              = 12
-	JsonPathParserWS               = 13
-	JsonPathParserCOLON            = 14
-	JsonPathParserROOT_IDENTIFIER  = 15
-	JsonPathParserLOCAL_IDENTIFIER = 16
-	JsonPathParserGREATER          = 17
-	JsonPathParserGREATER_EQ       = 18
-	JsonPathParserLESS             = 19
-	JsonPathParserLESS_EQ          = 20
-	JsonPathParserEQ               = 21
-	JsonPathParserNEQ              = 22
-	JsonPathParserAND              = 23
-	JsonPathParserOR               = 24
+	JsonPathParserT__9             = 10
+	JsonPathParserT__10            = 11
+	JsonPathParserIDENTIFIER       = 12
+	JsonPathParserSTRING           = 13
+	JsonPathParserINT              = 14
+	JsonPathParserWS               = 15
+	JsonPathParserCOLON            = 16
+	JsonPathParserROOT_IDENTIFIER  = 17
+	JsonPathParserLOCAL_IDENTIFIER = 18
+	JsonPathParserGREATER          = 19
+	JsonPathParserGREATER_EQ       = 20
+	JsonPathParserLESS             = 21
+	JsonPathParserLESS_EQ          = 22
+	JsonPathParserEQ               = 23
+	JsonPathParserNEQ              = 24
+	JsonPathParserAND              = 25
+	JsonPathParserOR               = 26
 )
 
 // JsonPathParser rules.
@@ -202,6 +207,7 @@ const (
 	JsonPathParserRULE_filterOperation  = 8
 	JsonPathParserRULE_queryExpr        = 9
 	JsonPathParserRULE_dbl              = 10
+	JsonPathParserRULE_bool_type        = 11
 )
 
 // IJsonpathContext is an interface to support dynamic dispatch.
@@ -303,7 +309,7 @@ func (p *JsonPathParser) Jsonpath() (localctx IJsonpathContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(22)
+		p.SetState(24)
 		p.root(0)
 	}
 
@@ -465,16 +471,16 @@ func (p *JsonPathParser) root(_p int) (localctx IRootContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(25)
+		p.SetState(27)
 		p.Match(JsonPathParserROOT_IDENTIFIER)
 	}
 	{
-		p.SetState(26)
+		p.SetState(28)
 		p.FieldAccess()
 	}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(37)
+	p.SetState(39)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 1, p.GetParserRuleContext())
 
@@ -486,23 +492,23 @@ func (p *JsonPathParser) root(_p int) (localctx IRootContext) {
 			_prevctx = localctx
 			localctx = NewRootContext(p, _parentctx, _parentState)
 			p.PushNewRecursionContext(localctx, _startState, JsonPathParserRULE_root)
-			p.SetState(28)
+			p.SetState(30)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 			}
-			p.SetState(31)
+			p.SetState(33)
 			p.GetErrorHandler().Sync(p)
 			_alt = 1
 			for ok := true; ok; ok = _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 				switch _alt {
 				case 1:
 					{
-						p.SetState(29)
+						p.SetState(31)
 						p.Match(JsonPathParserT__0)
 					}
 					{
-						p.SetState(30)
+						p.SetState(32)
 						p.FieldAccess()
 					}
 
@@ -510,13 +516,13 @@ func (p *JsonPathParser) root(_p int) (localctx IRootContext) {
 					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 				}
 
-				p.SetState(33)
+				p.SetState(35)
 				p.GetErrorHandler().Sync(p)
 				_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 0, p.GetParserRuleContext())
 			}
 
 		}
-		p.SetState(39)
+		p.SetState(41)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 1, p.GetParserRuleContext())
 	}
@@ -625,39 +631,39 @@ func (p *JsonPathParser) FieldAccess() (localctx IFieldAccessContext) {
 		}
 	}()
 
-	p.SetState(46)
+	p.SetState(48)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 2, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
-		{
-			p.SetState(40)
-			p.Match(JsonPathParserIDENTIFIER)
-		}
-		{
-			p.SetState(41)
-			p.ArrayQualifier()
-		}
-
-	case 2:
-		p.EnterOuterAlt(localctx, 2)
 		{
 			p.SetState(42)
 			p.Match(JsonPathParserIDENTIFIER)
 		}
 		{
 			p.SetState(43)
+			p.ArrayQualifier()
+		}
+
+	case 2:
+		p.EnterOuterAlt(localctx, 2)
+		{
+			p.SetState(44)
+			p.Match(JsonPathParserIDENTIFIER)
+		}
+		{
+			p.SetState(45)
 			p.Match(JsonPathParserT__0)
 		}
 		{
-			p.SetState(44)
+			p.SetState(46)
 			p.ArrayQualifier()
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(45)
+			p.SetState(47)
 			p.Match(JsonPathParserIDENTIFIER)
 		}
 
@@ -821,16 +827,16 @@ func (p *JsonPathParser) localFieldAccess(_p int) (localctx ILocalFieldAccessCon
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(49)
+		p.SetState(51)
 		p.Match(JsonPathParserLOCAL_IDENTIFIER)
 	}
 	{
-		p.SetState(50)
+		p.SetState(52)
 		p.FieldAccess()
 	}
 
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(61)
+	p.SetState(63)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 4, p.GetParserRuleContext())
 
@@ -842,23 +848,23 @@ func (p *JsonPathParser) localFieldAccess(_p int) (localctx ILocalFieldAccessCon
 			_prevctx = localctx
 			localctx = NewLocalFieldAccessContext(p, _parentctx, _parentState)
 			p.PushNewRecursionContext(localctx, _startState, JsonPathParserRULE_localFieldAccess)
-			p.SetState(52)
+			p.SetState(54)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 1)) {
 				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 1)", ""))
 			}
-			p.SetState(55)
+			p.SetState(57)
 			p.GetErrorHandler().Sync(p)
 			_alt = 1
 			for ok := true; ok; ok = _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 				switch _alt {
 				case 1:
 					{
-						p.SetState(53)
+						p.SetState(55)
 						p.Match(JsonPathParserT__0)
 					}
 					{
-						p.SetState(54)
+						p.SetState(56)
 						p.FieldAccess()
 					}
 
@@ -866,13 +872,13 @@ func (p *JsonPathParser) localFieldAccess(_p int) (localctx ILocalFieldAccessCon
 					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 				}
 
-				p.SetState(57)
+				p.SetState(59)
 				p.GetErrorHandler().Sync(p)
 				_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 3, p.GetParserRuleContext())
 			}
 
 		}
-		p.SetState(63)
+		p.SetState(65)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 4, p.GetParserRuleContext())
 	}
@@ -1155,14 +1161,14 @@ func (p *JsonPathParser) ArrayQualifier() (localctx IArrayQualifierContext) {
 		}
 	}()
 
-	p.SetState(77)
+	p.SetState(79)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 5, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewGetAllContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(64)
+			p.SetState(66)
 			p.Match(JsonPathParserT__1)
 		}
 
@@ -1170,15 +1176,15 @@ func (p *JsonPathParser) ArrayQualifier() (localctx IArrayQualifierContext) {
 		localctx = NewGetByIndicesContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(65)
+			p.SetState(67)
 			p.Match(JsonPathParserT__2)
 		}
 		{
-			p.SetState(66)
+			p.SetState(68)
 			p.IntSequence()
 		}
 		{
-			p.SetState(67)
+			p.SetState(69)
 			p.Match(JsonPathParserT__3)
 		}
 
@@ -1186,7 +1192,7 @@ func (p *JsonPathParser) ArrayQualifier() (localctx IArrayQualifierContext) {
 		localctx = NewGetByRangeContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(69)
+			p.SetState(71)
 			p.ArrayRange()
 		}
 
@@ -1194,15 +1200,15 @@ func (p *JsonPathParser) ArrayQualifier() (localctx IArrayQualifierContext) {
 		localctx = NewGetByQueryContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(70)
+			p.SetState(72)
 			p.Match(JsonPathParserT__4)
 		}
 		{
-			p.SetState(71)
+			p.SetState(73)
 			p.FilterOperation()
 		}
 		{
-			p.SetState(72)
+			p.SetState(74)
 			p.Match(JsonPathParserT__5)
 		}
 
@@ -1210,15 +1216,15 @@ func (p *JsonPathParser) ArrayQualifier() (localctx IArrayQualifierContext) {
 		localctx = NewGetByIndexBackwardContext(p, localctx)
 		p.EnterOuterAlt(localctx, 5)
 		{
-			p.SetState(74)
+			p.SetState(76)
 			p.Match(JsonPathParserT__6)
 		}
 		{
-			p.SetState(75)
+			p.SetState(77)
 			p.Match(JsonPathParserINT)
 		}
 		{
-			p.SetState(76)
+			p.SetState(78)
 			p.Match(JsonPathParserT__3)
 		}
 
@@ -1457,14 +1463,14 @@ func (p *JsonPathParser) ArrayRange() (localctx IArrayRangeContext) {
 		}
 	}()
 
-	p.SetState(109)
+	p.SetState(111)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 10, p.GetParserRuleContext()) {
 	case 1:
 		localctx = NewAllRangeContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(79)
+			p.SetState(81)
 			p.Match(JsonPathParserT__7)
 		}
 
@@ -1472,43 +1478,43 @@ func (p *JsonPathParser) ArrayRange() (localctx IArrayRangeContext) {
 		localctx = NewGivenStartEndIdxRangeContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(80)
+			p.SetState(82)
 			p.Match(JsonPathParserT__2)
 		}
-		p.SetState(82)
+		p.SetState(84)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		for ok := true; ok; ok = _la == JsonPathParserINT {
 			{
-				p.SetState(81)
+				p.SetState(83)
 				p.Match(JsonPathParserINT)
 			}
 
-			p.SetState(84)
+			p.SetState(86)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(86)
+			p.SetState(88)
 			p.Match(JsonPathParserCOLON)
 		}
-		p.SetState(88)
+		p.SetState(90)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		for ok := true; ok; ok = _la == JsonPathParserINT {
 			{
-				p.SetState(87)
+				p.SetState(89)
 				p.Match(JsonPathParserINT)
 			}
 
-			p.SetState(90)
+			p.SetState(92)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(92)
+			p.SetState(94)
 			p.Match(JsonPathParserT__3)
 		}
 
@@ -1516,29 +1522,29 @@ func (p *JsonPathParser) ArrayRange() (localctx IArrayRangeContext) {
 		localctx = NewGivenOnlyEndIdxRangeContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(93)
+			p.SetState(95)
 			p.Match(JsonPathParserT__2)
 		}
 		{
-			p.SetState(94)
+			p.SetState(96)
 			p.Match(JsonPathParserCOLON)
 		}
-		p.SetState(96)
+		p.SetState(98)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		for ok := true; ok; ok = _la == JsonPathParserINT {
 			{
-				p.SetState(95)
+				p.SetState(97)
 				p.Match(JsonPathParserINT)
 			}
 
-			p.SetState(98)
+			p.SetState(100)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(100)
+			p.SetState(102)
 			p.Match(JsonPathParserT__3)
 		}
 
@@ -1546,29 +1552,29 @@ func (p *JsonPathParser) ArrayRange() (localctx IArrayRangeContext) {
 		localctx = NewGivenOnlyStartIdxRangeContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(101)
+			p.SetState(103)
 			p.Match(JsonPathParserT__2)
 		}
-		p.SetState(103)
+		p.SetState(105)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		for ok := true; ok; ok = _la == JsonPathParserINT {
 			{
-				p.SetState(102)
+				p.SetState(104)
 				p.Match(JsonPathParserINT)
 			}
 
-			p.SetState(105)
+			p.SetState(107)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(107)
+			p.SetState(109)
 			p.Match(JsonPathParserCOLON)
 		}
 		{
-			p.SetState(108)
+			p.SetState(110)
 			p.Match(JsonPathParserT__3)
 		}
 
@@ -1669,24 +1675,24 @@ func (p *JsonPathParser) IntSequence() (localctx IIntSequenceContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(111)
+		p.SetState(113)
 		p.Match(JsonPathParserINT)
 	}
-	p.SetState(116)
+	p.SetState(118)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	for _la == JsonPathParserT__8 {
 		{
-			p.SetState(112)
+			p.SetState(114)
 			p.Match(JsonPathParserT__8)
 		}
 		{
-			p.SetState(113)
+			p.SetState(115)
 			p.Match(JsonPathParserINT)
 		}
 
-		p.SetState(118)
+		p.SetState(120)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 	}
@@ -1916,6 +1922,52 @@ func (s *QueryFieldDoubleValueContext) ExitRule(listener antlr.ParseTreeListener
 	}
 }
 
+type QueryFieldBoolValueContext struct {
+	*QueryFieldValueContext
+}
+
+func NewQueryFieldBoolValueContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *QueryFieldBoolValueContext {
+	var p = new(QueryFieldBoolValueContext)
+
+	p.QueryFieldValueContext = NewEmptyQueryFieldValueContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*QueryFieldValueContext))
+
+	return p
+}
+
+func (s *QueryFieldBoolValueContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *QueryFieldBoolValueContext) Bool_type() IBool_typeContext {
+	var t antlr.RuleContext
+	for _, ctx := range s.GetChildren() {
+		if _, ok := ctx.(IBool_typeContext); ok {
+			t = ctx.(antlr.RuleContext)
+			break
+		}
+	}
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IBool_typeContext)
+}
+
+func (s *QueryFieldBoolValueContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(JsonPathListener); ok {
+		listenerT.EnterQueryFieldBoolValue(s)
+	}
+}
+
+func (s *QueryFieldBoolValueContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(JsonPathListener); ok {
+		listenerT.ExitQueryFieldBoolValue(s)
+	}
+}
+
 func (p *JsonPathParser) QueryFieldValue() (localctx IQueryFieldValueContext) {
 	this := p
 	_ = this
@@ -1939,7 +1991,7 @@ func (p *JsonPathParser) QueryFieldValue() (localctx IQueryFieldValueContext) {
 		}
 	}()
 
-	p.SetState(123)
+	p.SetState(126)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
@@ -1947,7 +1999,7 @@ func (p *JsonPathParser) QueryFieldValue() (localctx IQueryFieldValueContext) {
 		localctx = NewQueryFieldValueLocalAccessContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(119)
+			p.SetState(121)
 			p.localFieldAccess(0)
 		}
 
@@ -1955,7 +2007,7 @@ func (p *JsonPathParser) QueryFieldValue() (localctx IQueryFieldValueContext) {
 		localctx = NewQueryFieldValueRootAccessContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(120)
+			p.SetState(122)
 			p.root(0)
 		}
 
@@ -1963,7 +2015,7 @@ func (p *JsonPathParser) QueryFieldValue() (localctx IQueryFieldValueContext) {
 		localctx = NewQueryFieldDoubleValueContext(p, localctx)
 		p.EnterOuterAlt(localctx, 3)
 		{
-			p.SetState(121)
+			p.SetState(123)
 			p.Dbl()
 		}
 
@@ -1971,8 +2023,16 @@ func (p *JsonPathParser) QueryFieldValue() (localctx IQueryFieldValueContext) {
 		localctx = NewQueryFieldStringValueContext(p, localctx)
 		p.EnterOuterAlt(localctx, 4)
 		{
-			p.SetState(122)
+			p.SetState(124)
 			p.Match(JsonPathParserSTRING)
+		}
+
+	case JsonPathParserT__9, JsonPathParserT__10:
+		localctx = NewQueryFieldBoolValueContext(p, localctx)
+		p.EnterOuterAlt(localctx, 5)
+		{
+			p.SetState(125)
+			p.Bool_type()
 		}
 
 	default:
@@ -2081,7 +2141,7 @@ func (p *JsonPathParser) FilterOperation() (localctx IFilterOperationContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(125)
+		p.SetState(128)
 		p.queryExpr(0)
 	}
 
@@ -2412,7 +2472,7 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(133)
+	p.SetState(136)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 13, p.GetParserRuleContext()) {
 	case 1:
@@ -2421,7 +2481,7 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 		_prevctx = localctx
 
 		{
-			p.SetState(128)
+			p.SetState(131)
 			p.QueryFieldValue()
 		}
 
@@ -2430,11 +2490,11 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(129)
+			p.SetState(132)
 			p.QueryFieldValue()
 		}
 		{
-			p.SetState(130)
+			p.SetState(133)
 
 			var _lt = p.GetTokenStream().LT(1)
 
@@ -2452,13 +2512,13 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 			}
 		}
 		{
-			p.SetState(131)
+			p.SetState(134)
 			p.QueryFieldValue()
 		}
 
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(144)
+	p.SetState(147)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 15, p.GetParserRuleContext())
 
@@ -2470,19 +2530,19 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 			_prevctx = localctx
 			localctx = NewQueryWithLogicalOpContext(p, NewQueryExprContext(p, _parentctx, _parentState))
 			p.PushNewRecursionContext(localctx, _startState, JsonPathParserRULE_queryExpr)
-			p.SetState(135)
+			p.SetState(138)
 
 			if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 			}
-			p.SetState(138)
+			p.SetState(141)
 			p.GetErrorHandler().Sync(p)
 			_alt = 1
 			for ok := true; ok; ok = _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 				switch _alt {
 				case 1:
 					{
-						p.SetState(136)
+						p.SetState(139)
 
 						var _lt = p.GetTokenStream().LT(1)
 
@@ -2500,7 +2560,7 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 						}
 					}
 					{
-						p.SetState(137)
+						p.SetState(140)
 						p.queryExpr(0)
 					}
 
@@ -2508,13 +2568,13 @@ func (p *JsonPathParser) queryExpr(_p int) (localctx IQueryExprContext) {
 					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 				}
 
-				p.SetState(140)
+				p.SetState(143)
 				p.GetErrorHandler().Sync(p)
 				_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext())
 			}
 
 		}
-		p.SetState(146)
+		p.SetState(149)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 15, p.GetParserRuleContext())
 	}
@@ -2614,37 +2674,37 @@ func (p *JsonPathParser) Dbl() (localctx IDblContext) {
 
 	var _alt int
 
-	p.SetState(169)
+	p.SetState(172)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 20, p.GetParserRuleContext()) {
 	case 1:
 		p.EnterOuterAlt(localctx, 1)
-		p.SetState(148)
+		p.SetState(151)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		for ok := true; ok; ok = _la == JsonPathParserINT {
 			{
-				p.SetState(147)
+				p.SetState(150)
 				p.Match(JsonPathParserINT)
 			}
 
-			p.SetState(150)
+			p.SetState(153)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 		}
 		{
-			p.SetState(152)
+			p.SetState(155)
 			p.Match(JsonPathParserT__0)
 		}
-		p.SetState(154)
+		p.SetState(157)
 		p.GetErrorHandler().Sync(p)
 		_alt = 1
 		for ok := true; ok; ok = _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 			switch _alt {
 			case 1:
 				{
-					p.SetState(153)
+					p.SetState(156)
 					p.Match(JsonPathParserINT)
 				}
 
@@ -2652,7 +2712,7 @@ func (p *JsonPathParser) Dbl() (localctx IDblContext) {
 				panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 			}
 
-			p.SetState(156)
+			p.SetState(159)
 			p.GetErrorHandler().Sync(p)
 			_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 17, p.GetParserRuleContext())
 		}
@@ -2660,17 +2720,17 @@ func (p *JsonPathParser) Dbl() (localctx IDblContext) {
 	case 2:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(158)
+			p.SetState(161)
 			p.Match(JsonPathParserT__0)
 		}
-		p.SetState(160)
+		p.SetState(163)
 		p.GetErrorHandler().Sync(p)
 		_alt = 1
 		for ok := true; ok; ok = _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 			switch _alt {
 			case 1:
 				{
-					p.SetState(159)
+					p.SetState(162)
 					p.Match(JsonPathParserINT)
 				}
 
@@ -2678,21 +2738,21 @@ func (p *JsonPathParser) Dbl() (localctx IDblContext) {
 				panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 			}
 
-			p.SetState(162)
+			p.SetState(165)
 			p.GetErrorHandler().Sync(p)
 			_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 18, p.GetParserRuleContext())
 		}
 
 	case 3:
 		p.EnterOuterAlt(localctx, 3)
-		p.SetState(165)
+		p.SetState(168)
 		p.GetErrorHandler().Sync(p)
 		_alt = 1
 		for ok := true; ok; ok = _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 			switch _alt {
 			case 1:
 				{
-					p.SetState(164)
+					p.SetState(167)
 					p.Match(JsonPathParserINT)
 				}
 
@@ -2700,11 +2760,108 @@ func (p *JsonPathParser) Dbl() (localctx IDblContext) {
 				panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 			}
 
-			p.SetState(167)
+			p.SetState(170)
 			p.GetErrorHandler().Sync(p)
 			_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 19, p.GetParserRuleContext())
 		}
 
+	}
+
+	return localctx
+}
+
+// IBool_typeContext is an interface to support dynamic dispatch.
+type IBool_typeContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// IsBool_typeContext differentiates from other interfaces.
+	IsBool_typeContext()
+}
+
+type Bool_typeContext struct {
+	*antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyBool_typeContext() *Bool_typeContext {
+	var p = new(Bool_typeContext)
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	p.RuleIndex = JsonPathParserRULE_bool_type
+	return p
+}
+
+func (*Bool_typeContext) IsBool_typeContext() {}
+
+func NewBool_typeContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *Bool_typeContext {
+	var p = new(Bool_typeContext)
+
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = JsonPathParserRULE_bool_type
+
+	return p
+}
+
+func (s *Bool_typeContext) GetParser() antlr.Parser { return s.parser }
+func (s *Bool_typeContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *Bool_typeContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *Bool_typeContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(JsonPathListener); ok {
+		listenerT.EnterBool_type(s)
+	}
+}
+
+func (s *Bool_typeContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(JsonPathListener); ok {
+		listenerT.ExitBool_type(s)
+	}
+}
+
+func (p *JsonPathParser) Bool_type() (localctx IBool_typeContext) {
+	this := p
+	_ = this
+
+	localctx = NewBool_typeContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 22, JsonPathParserRULE_bool_type)
+	var _la int
+
+	defer func() {
+		p.ExitRule()
+	}()
+
+	defer func() {
+		if err := recover(); err != nil {
+			if v, ok := err.(antlr.RecognitionException); ok {
+				localctx.SetException(v)
+				p.GetErrorHandler().ReportError(p, v)
+				p.GetErrorHandler().Recover(p, v)
+			} else {
+				panic(err)
+			}
+		}
+	}()
+
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(174)
+		_la = p.GetTokenStream().LA(1)
+
+		if !(_la == JsonPathParserT__9 || _la == JsonPathParserT__10) {
+			p.GetErrorHandler().RecoverInline(p)
+		} else {
+			p.GetErrorHandler().ReportMatch(p)
+			p.Consume()
+		}
 	}
 
 	return localctx

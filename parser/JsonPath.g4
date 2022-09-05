@@ -32,10 +32,11 @@ arrayRange : '[:]'                     # AllRange
 intSequence: INT (',' INT)* ;
 
 
-queryFieldValue       : localFieldAccess    # QueryFieldValueLocalAccess
+queryFieldValue       : localFieldAccess        # QueryFieldValueLocalAccess
                         | root                  # QueryFieldValueRootAccess
                         | dbl                   # QueryFieldDoubleValue
                         | STRING                # QueryFieldStringValue
+                        | bool_type             # QueryFieldBoolValue
                         ;
 
 filterOperation : queryExpr ;
@@ -49,6 +50,8 @@ dbl : INT+ '.' INT+
     | '.' INT+
     | INT+
     ;
+
+bool_type : 'true' | 'false' ;
 
 IDENTIFIER : [a-zA-Z_][a-zA-Z_0-9]* ;
 STRING : '\'' IDENTIFIER '\'' ;

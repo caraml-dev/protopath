@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 
 func TestToFloat64(t *testing.T) {
 	type args struct {
-		v interface{}
+		v any
 	}
 	tests := []struct {
 		name    string
@@ -98,6 +98,94 @@ func TestToFloat64(t *testing.T) {
 			}
 
 			assert.InEpsilon(t, tt.want, got, 0.0001)
+		})
+	}
+}
+
+func TestToBool(t *testing.T) {
+	type args struct {
+		v interface{}
+	}
+	tests := []struct {
+		name    string
+		args    args
+		want    bool
+		wantErr bool
+	}{
+		{
+			name: "from bool",
+			args: args{
+				v: true,
+			},
+			want:    true,
+			wantErr: false,
+		},
+		{
+			name: "from string",
+			args: args{
+				v: "true",
+			},
+			want:    true,
+			wantErr: false,
+		},
+		{
+			name: "from int",
+			args: args{
+				v: 0,
+			},
+			want:    false,
+			wantErr: false,
+		},
+		{
+			name: "from int",
+			args: args{
+				v: 1,
+			},
+			want:    true,
+			wantErr: false,
+		},
+		{
+			name: "from int",
+			args: args{
+				v: 3,
+			},
+			want:    false,
+			wantErr: true,
+		},
+		{
+			name: "from float",
+			args: args{
+				v: 1.1,
+			},
+			want:    false,
+			wantErr: true,
+		},
+		{
+			name: "from float",
+			args: args{
+				v: float64(1.0),
+			},
+			want:    true,
+			wantErr: false,
+		},
+		{
+			name: "from float",
+			args: args{
+				v: float64(0.0),
+			},
+			want:    false,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := toBool(tt.args.v)
+			if tt.wantErr {
+				assert.Error(t, err)
+				return
+			}
+
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

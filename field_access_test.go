@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
@@ -38,10 +38,10 @@ func TestFieldAccessOperation_Lookup(t *testing.T) {
 
 	tests := []struct {
 		name          string
-		obj           interface{}
-		rootObj       interface{}
+		obj           any
+		rootObj       any
 		fieldAccessOp *FieldAccessOperation
-		want          interface{}
+		want          any
 		expectedErr   error
 	}{
 		{
@@ -110,7 +110,7 @@ func TestFieldAccessOperation_Lookup(t *testing.T) {
 	}
 }
 
-func assertValueEquality(t *testing.T, expected, actual interface{}) {
+func assertValueEquality(t *testing.T, expected, actual any) {
 	wantReflectVal := reflect.ValueOf(expected)
 
 	switch wantReflectVal.Kind() {

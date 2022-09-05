@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import "testing"
 
@@ -136,6 +136,60 @@ func Test_comparator(t *testing.T) {
 				leftVal:  false,
 				rightVal: "aa",
 				op:       nEq,
+			},
+			want: false,
+		},
+		{
+			name: "compare bool with bool; nEq",
+			args: args{
+				leftVal:  false,
+				rightVal: true,
+				op:       nEq,
+			},
+			want: true,
+		},
+		{
+			name: "compare bool with bool; eq",
+			args: args{
+				leftVal:  false,
+				rightVal: true,
+				op:       eq,
+			},
+			want: false,
+		},
+		{
+			name: "compare bool with bool; greater",
+			args: args{
+				leftVal:  true,
+				rightVal: true,
+				op:       greater,
+			},
+			want: false,
+		},
+		{
+			name: "compare bool with bool; greaterEq",
+			args: args{
+				leftVal:  true,
+				rightVal: true,
+				op:       greaterEq,
+			},
+			want: false,
+		},
+		{
+			name: "compare bool with bool; less",
+			args: args{
+				leftVal:  true,
+				rightVal: true,
+				op:       less,
+			},
+			want: false,
+		},
+		{
+			name: "compare bool with bool; lessEq",
+			args: args{
+				leftVal:  true,
+				rightVal: true,
+				op:       lessEq,
 			},
 			want: false,
 		},

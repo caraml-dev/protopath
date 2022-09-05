@@ -132,6 +132,12 @@ func (s *BaseJsonPathListener) EnterQueryFieldStringValue(ctx *QueryFieldStringV
 // ExitQueryFieldStringValue is called when production QueryFieldStringValue is exited.
 func (s *BaseJsonPathListener) ExitQueryFieldStringValue(ctx *QueryFieldStringValueContext) {}
 
+// EnterQueryFieldBoolValue is called when production QueryFieldBoolValue is entered.
+func (s *BaseJsonPathListener) EnterQueryFieldBoolValue(ctx *QueryFieldBoolValueContext) {}
+
+// ExitQueryFieldBoolValue is called when production QueryFieldBoolValue is exited.
+func (s *BaseJsonPathListener) ExitQueryFieldBoolValue(ctx *QueryFieldBoolValueContext) {}
+
 // EnterFilterOperation is called when production filterOperation is entered.
 func (s *BaseJsonPathListener) EnterFilterOperation(ctx *FilterOperationContext) {}
 
@@ -161,3 +167,9 @@ func (s *BaseJsonPathListener) EnterDbl(ctx *DblContext) {}
 
 // ExitDbl is called when production dbl is exited.
 func (s *BaseJsonPathListener) ExitDbl(ctx *DblContext) {}
+
+// EnterBool_type is called when production bool_type is entered.
+func (s *BaseJsonPathListener) EnterBool_type(ctx *Bool_typeContext) {}
+
+// ExitBool_type is called when production bool_type is exited.
+func (s *BaseJsonPathListener) ExitBool_type(ctx *Bool_typeContext) {}

@@ -1,0 +1,9 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/caraml-dev/protopath/internal/gen
+plugins:
+  - name: go
+    out: gen
+    opt: paths=import,module=github.com/caraml-dev/protopath/internal/gen

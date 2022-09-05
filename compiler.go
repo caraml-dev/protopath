@@ -1,25 +1,27 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/caraml-dev/jsonpath/parser"
+	"github.com/caraml-dev/protopath/parser"
+	"google.golang.org/protobuf/proto"
 )
 
+// Operation responsible to find the value based on compiled jsonpath syntax
 type Operation interface {
-	Lookup(ctx context.Context, obj, rootObj interface{}) (interface{}, error)
+	Lookup(ctx context.Context, obj, rootObj any) (any, error)
 }
 
-// Compiler represents operations and way to fetch field based on jsonpath syntax
-type Compiler struct {
+// Compiled represents operations and way to fetch field based on jsonpath syntax
+type Compiled struct {
 	Operations  []Operation
 	Path        string
 	fieldGetter FieldGetter
 }
 
 // NewJsonPathCompiler compile all operations given the jsonpath
-func NewJsonPathCompiler(jsonpath string) (*Compiler, error) {
+func NewJsonPathCompiler(jsonpath string) (*Compiled, error) {
 	is := antlr.NewInputStream(jsonpath)
 	lexer := parser.NewJsonPathLexer(is)
 
@@ -31,15 +33,17 @@ func NewJsonPathCompiler(jsonpath string) (*Compiler, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Compiler{
+	return &Compiled{
 		Operations:  allOps,
 		Path:        jsonpath,
 		fieldGetter: fieldGetter,
 	}, nil
 }
 
-func (c *Compiler) Lookup(ctx context.Context, obj interface{}) (interface{}, error) {
-	res := obj
+// Lookup run all the compiled operation based on the jsonpath syntax given proto message obj
+// Return of this method not necessary is proto message it can be anything
+func (c *Compiled) Lookup(ctx context.Context, obj proto.Message) (any, error) {
+	var res any = obj
 	var err error
 	for _, op := range c.Operations {
 		res, err = op.Lookup(ctx, res, obj)

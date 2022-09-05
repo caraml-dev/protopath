@@ -1,9 +1,10 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
 	"testing"
 
+	samplev1 "github.com/caraml-dev/protopath/internal/gen/sample/v1"
 	upiV1 "github.com/caraml-dev/universal-prediction-interface/gen/go/grpc/caraml/upi/v1"
 	"github.com/stretchr/testify/assert"
 )
@@ -12,9 +13,9 @@ func TestQueryFilterOp_Lookup(t *testing.T) {
 	tests := []struct {
 		name        string
 		queryOp     *QueryFilterOp
-		obj         interface{}
-		rootObj     interface{}
-		want        interface{}
+		obj         any
+		rootObj     any
+		want        any
 		expectedErr error
 	}{
 		{
@@ -62,6 +63,56 @@ func TestQueryFilterOp_Lookup(t *testing.T) {
 					Name:        "avg_120d_total_orders",
 					Type:        upiV1.NamedValue_TYPE_DOUBLE,
 					DoubleValue: 4.0,
+				},
+			},
+		},
+		{
+			name: "filter using field existence",
+			queryOp: &QueryFilterOp{
+				LeftOp: []Operation{
+					&FieldAccessOperation{
+						fieldName:   "address",
+						fieldGetter: &ProtoFieldGetter{},
+						fromRoot:    false,
+					},
+				},
+			},
+			obj: []*samplev1.LineItem{
+				{
+					LineItemId: "1",
+					BasePrice:  1000,
+					Markup:     0.0,
+					Quantity:   1,
+					IsPromo:    false,
+				},
+				{
+					LineItemId: "2",
+					BasePrice:  2000,
+					Markup:     0.0,
+					Quantity:   2,
+					IsPromo:    false,
+					Address: &samplev1.Address{
+						DetailAddress: "Pasaraya Blok M",
+					},
+				},
+				{
+					LineItemId: "3",
+					BasePrice:  3000,
+					Markup:     0.2,
+					Quantity:   3,
+					IsPromo:    true,
+				},
+			},
+			want: []*samplev1.LineItem{
+				{
+					LineItemId: "2",
+					BasePrice:  2000,
+					Markup:     0.0,
+					Quantity:   2,
+					IsPromo:    false,
+					Address: &samplev1.Address{
+						DetailAddress: "Pasaraya Blok M",
+					},
 				},
 			},
 		},

@@ -62,6 +62,9 @@ type JsonPathListener interface {
 	// EnterQueryFieldStringValue is called when entering the QueryFieldStringValue production.
 	EnterQueryFieldStringValue(c *QueryFieldStringValueContext)
 
+	// EnterQueryFieldBoolValue is called when entering the QueryFieldBoolValue production.
+	EnterQueryFieldBoolValue(c *QueryFieldBoolValueContext)
+
 	// EnterFilterOperation is called when entering the filterOperation production.
 	EnterFilterOperation(c *FilterOperationContext)
 
@@ -76,6 +79,9 @@ type JsonPathListener interface {
 
 	// EnterDbl is called when entering the dbl production.
 	EnterDbl(c *DblContext)
+
+	// EnterBool_type is called when entering the bool_type production.
+	EnterBool_type(c *Bool_typeContext)
 
 	// ExitJsonpath is called when exiting the jsonpath production.
 	ExitJsonpath(c *JsonpathContext)
@@ -131,6 +137,9 @@ type JsonPathListener interface {
 	// ExitQueryFieldStringValue is called when exiting the QueryFieldStringValue production.
 	ExitQueryFieldStringValue(c *QueryFieldStringValueContext)
 
+	// ExitQueryFieldBoolValue is called when exiting the QueryFieldBoolValue production.
+	ExitQueryFieldBoolValue(c *QueryFieldBoolValueContext)
+
 	// ExitFilterOperation is called when exiting the filterOperation production.
 	ExitFilterOperation(c *FilterOperationContext)
 
@@ -145,4 +154,7 @@ type JsonPathListener interface {
 
 	// ExitDbl is called when exiting the dbl production.
 	ExitDbl(c *DblContext)
+
+	// ExitBool_type is called when exiting the bool_type production.
+	ExitBool_type(c *Bool_typeContext)
 }

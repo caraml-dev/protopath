@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
@@ -26,19 +26,19 @@ const (
 // 2. QueryFilterOp. Operation contains comparation or logical operation
 // 3. Exact value, e.g string or float64
 type QueryFilterOp struct {
-	LeftOp   interface{}
-	RightOp  interface{}
+	LeftOp   any
+	RightOp  any
 	Operator operator
 }
 
 var _ Operation = (*QueryFilterOp)(nil)
 
 // Lookup find the filtered value given object
-func (q *QueryFilterOp) Lookup(ctx context.Context, obj, rootObj interface{}) (interface{}, error) {
+func (q *QueryFilterOp) Lookup(ctx context.Context, obj, rootObj any) (any, error) {
 	reflectVal := reflect.ValueOf(obj)
 	switch reflectVal.Kind() {
 	case reflect.Slice:
-		res := make([]interface{}, 0)
+		res := make([]any, 0)
 		for i := 0; i < reflectVal.Len(); i++ {
 			currVal := reflectVal.Index(i).Interface()
 			currReflectVal := reflect.ValueOf(currVal)
@@ -77,7 +77,7 @@ func (q *QueryFilterOp) Lookup(ctx context.Context, obj, rootObj interface{}) (i
 	}
 }
 
-func (q *QueryFilterOp) eval(ctx context.Context, obj, rootObj interface{}) (bool, error) {
+func (q *QueryFilterOp) eval(ctx context.Context, obj, rootObj any) (bool, error) {
 	leftVal, err := q.getValFromAnyOperations(ctx, q.LeftOp, obj, rootObj)
 	if err != nil {
 		return false, err
@@ -115,7 +115,7 @@ func (q *QueryFilterOp) eval(ctx context.Context, obj, rootObj interface{}) (boo
 	return false, nil
 }
 
-func (q *QueryFilterOp) getValFromAnyOperations(ctx context.Context, ops, obj, rootObj interface{}) (interface{}, error) {
+func (q *QueryFilterOp) getValFromAnyOperations(ctx context.Context, ops, obj, rootObj any) (any, error) {
 	switch opsT := ops.(type) {
 	case []Operation:
 		val := obj

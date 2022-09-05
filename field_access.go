@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
@@ -20,7 +20,7 @@ type FieldAccessOperation struct {
 }
 
 // Lookup evaluate operation and returning field value
-func (f *FieldAccessOperation) Lookup(ctx context.Context, obj, rootObj interface{}) (interface{}, error) {
+func (f *FieldAccessOperation) Lookup(ctx context.Context, obj, rootObj any) (any, error) {
 	selectedObj := obj
 	if f.fromRoot {
 		selectedObj = rootObj
@@ -30,18 +30,18 @@ func (f *FieldAccessOperation) Lookup(ctx context.Context, obj, rootObj interfac
 
 // FieldGetter get value of field given the field name and object to evaluate
 type FieldGetter interface {
-	GetField(name string, obj interface{}) (interface{}, error)
+	GetField(name string, obj any) (any, error)
 }
 
 // ProtoFieldGetter is way to access field for protobuf message object
 type ProtoFieldGetter struct{}
 
 // GetField retrieve the field value given the the field name and object
-func (p *ProtoFieldGetter) GetField(fieldName string, obj interface{}) (interface{}, error) {
+func (p *ProtoFieldGetter) GetField(fieldName string, obj any) (any, error) {
 	objReflectVal := reflect.ValueOf(obj)
 	switch objReflectVal.Kind() {
 	case reflect.Slice:
-		res := make([]interface{}, 0, objReflectVal.Len())
+		res := make([]any, 0, objReflectVal.Len())
 		for i := 0; i < objReflectVal.Len(); i++ {
 			val, err := p.getFieldFromMessage(fieldName, objReflectVal.Index(i).Interface())
 			if err != nil {
@@ -55,7 +55,7 @@ func (p *ProtoFieldGetter) GetField(fieldName string, obj interface{}) (interfac
 	}
 }
 
-func (p *ProtoFieldGetter) getFieldFromMessage(fieldName string, obj interface{}) (interface{}, error) {
+func (p *ProtoFieldGetter) getFieldFromMessage(fieldName string, obj any) (any, error) {
 	protoObj, isProto := obj.(proto.Message)
 	if !isProto {
 		return nil, fmt.Errorf("object is not in proto.Message type")
@@ -69,9 +69,12 @@ func (p *ProtoFieldGetter) getFieldFromMessage(fieldName string, obj interface{}
 	fieldValue := messageReflect.Get(fieldDesciptor).Interface()
 	switch fieldT := fieldValue.(type) {
 	case protoreflect.Message:
+		if !fieldT.IsValid() {
+			return nil, nil
+		}
 		return fieldT.Interface(), nil
 	case protoreflect.List:
-		result := make([]interface{}, 0, fieldT.Len())
+		result := make([]any, 0, fieldT.Len())
 		for i := 0; i < fieldT.Len(); i++ {
 			val := fieldT.Get(i).Interface()
 			switch valT := val.(type) {

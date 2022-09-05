@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
@@ -6,28 +6,34 @@ import (
 	"reflect"
 )
 
+// ArrayAccessMethod responsible to execute any method to access array field
 type ArrayAccessMethod interface {
-	Get(ctx context.Context, obj interface{}) (interface{}, error)
+	Get(ctx context.Context, obj any) (any, error)
 }
 
+// ArrayAccessOperation is interface to access array fields
 type ArrayAccessOperation struct {
 	method ArrayAccessMethod
 }
 
-func (a *ArrayAccessOperation) Lookup(ctx context.Context, obj, _ interface{}) (interface{}, error) {
+// Lookup find the desired value based on defined operation
+func (a *ArrayAccessOperation) Lookup(ctx context.Context, obj, _ any) (any, error) {
 	return a.method.Get(ctx, obj)
 }
 
+// getByIndices, array access method by specified indices
+// e.g $.arr[1] or $.arr[1,2,5]
 type getByIndices struct {
 	indices []int
 }
 
-func (gbi *getByIndices) Get(ctx context.Context, val interface{}) (interface{}, error) {
+// Get find the desired value based on the defined method
+func (gbi *getByIndices) Get(ctx context.Context, val any) (any, error) {
 	reflectVal := reflect.ValueOf(val)
 	if reflectVal.Kind() != reflect.Slice {
 		return nil, fmt.Errorf("only work for slice")
 	}
-	result := make([]interface{}, 0)
+	result := make([]any, 0)
 	lenOfArray := reflectVal.Len()
 
 	isNestedArray := reflect.TypeOf(reflectVal.Index(0).Interface()).Kind() == reflect.Slice
@@ -62,12 +68,19 @@ func (gbi *getByIndices) Get(ctx context.Context, val interface{}) (interface{},
 	return result, nil
 }
 
+// getByRange, array access method by specify the range
+// e.g
+// 1. $.arr[1:5]
+// 2. $.arr[1:]
+// 3. $.arr[:3]
+// 4. $.arr[:]
 type getByRange struct {
 	startIdx *int
 	endIdx   *int
 }
 
-func (i *getByRange) Get(ctx context.Context, val interface{}) (interface{}, error) {
+// Get find the desired value based on the defined method
+func (i *getByRange) Get(ctx context.Context, val any) (any, error) {
 	reflectVal := reflect.ValueOf(val)
 	if reflectVal.Kind() != reflect.Slice {
 		return nil, fmt.Errorf("only work for slice")
@@ -95,7 +108,7 @@ func (i *getByRange) Get(ctx context.Context, val interface{}) (interface{}, err
 		return nil, fmt.Errorf("end index should be less or equal length of rows")
 	}
 
-	result := make([]interface{}, 0)
+	result := make([]any, 0)
 	if lenOfArray == 0 {
 		return result, nil
 	}
@@ -122,11 +135,14 @@ func (i *getByRange) Get(ctx context.Context, val interface{}) (interface{}, err
 	return result, nil
 }
 
+// getByBackwardIndex, array access method to find the object in the specific index counted from the end of index
+// e.g $.arr[@.length-4]
 type getByBackwardIndex struct {
 	index int
 }
 
-func (i *getByBackwardIndex) Get(ctx context.Context, val interface{}) (interface{}, error) {
+// Get find the desired value based on the defined method
+func (i *getByBackwardIndex) Get(ctx context.Context, val any) (any, error) {
 	reflectVal := reflect.ValueOf(val)
 	if reflectVal.Kind() != reflect.Slice {
 		return nil, fmt.Errorf("only work for slice")
@@ -146,7 +162,7 @@ func (i *getByBackwardIndex) Get(ctx context.Context, val interface{}) (interfac
 		return reflectVal.Index(idx).Interface(), nil
 	}
 
-	result := make([]interface{}, 0)
+	result := make([]any, 0)
 	for i := 0; i < lenOfArray; i++ {
 		currVal := reflectVal.Index(i).Interface()
 		currValReflection := reflect.ValueOf(currVal)

@@ -1,6 +1,6 @@
-package jsonpath
+package protopath
 
-func comparator(leftVal interface{}, rightVal interface{}, op operator) bool {
+func comparator(leftVal any, rightVal any, op operator) bool {
 	switch lVal := leftVal.(type) {
 	case int, int64, float32, float64:
 		switch rVal := rightVal.(type) {
@@ -23,6 +23,12 @@ func comparator(leftVal interface{}, rightVal interface{}, op operator) bool {
 			return false
 		}
 		return compareString(lVal, rVal, op)
+	case bool:
+		rVal, isBool := rightVal.(bool)
+		if !isBool {
+			return false
+		}
+		return compareBool(lVal, rVal, op)
 	}
 	return false
 }
@@ -37,6 +43,18 @@ func compareString(leftVal, rightVal string, op operator) bool {
 		return leftVal < rightVal
 	case lessEq:
 		return leftVal <= rightVal
+	case eq:
+		return leftVal == rightVal
+	case nEq:
+		return leftVal != rightVal
+	}
+	return false
+}
+
+func compareBool(leftVal, rightVal bool, op operator) bool {
+	switch op {
+	case greater, greaterEq, less, lessEq:
+		return false // operation not supported for bool type
 	case eq:
 		return leftVal == rightVal
 	case nEq:
@@ -63,7 +81,7 @@ func compareFloat64(leftVal, rightVal float64, op operator) bool {
 	return false
 }
 
-func logicalOperation(leftVal, rightVal interface{}, op operator) bool {
+func logicalOperation(leftVal, rightVal any, op operator) bool {
 	var lBoolVal bool
 	var rBoolVal bool
 	var isBool bool

@@ -1,4 +1,4 @@
-package jsonpath
+package protopath
 
 import (
 	"context"
@@ -16,8 +16,8 @@ func TestArrayAccessOperation_Lookup(t *testing.T) {
 	tests := []struct {
 		name          string
 		arrayAccessOp *ArrayAccessOperation
-		obj           interface{}
-		want          interface{}
+		obj           any
+		want          any
 		expectedErr   error
 	}{
 		{
