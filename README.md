@@ -13,13 +13,13 @@ Below are the supported expression in this library
 
 | Expression                                | Description                                                   |
 |-------------------------------------------|---------------------------------------------------------------|
-| $.property                                | Selects the specified property in a parent object.            |
-| $.properties[n]                           | Selects the n-th element from an array. Indexes are 0-based.  |
-| $.properties[index1, index2...]           | Selects array elements with the specified indexes, return list|
-| $.properties[start:end] or $.properties[start:] or $.properties[:end] or $.properties[:]                  | Selects array elements from the start index and up to, but not including, end index. If end is omitted, selects all elements from start until the end of the array. Returns a list|
-| $.properties[*]                           | Select all objects in properties the result will be flatenned list  |
-| $.properties[@.length-n]                  | Select the length-n th elements from array                    |
-| $.properties[?(expression)]               | Filter expression. Select all elements in array that match the specified filter|
+| `$.property`                                | Selects the specified property in a parent object.            |
+| `$.properties[n]`                           | Selects the n-th element from an array. Indexes are 0-based.  |
+| `$.properties[index1, index2...]`           | Selects array elements with the specified indexes, return list|
+| `$.properties[start:end]` or `$.properties[start:]` or `$.properties[:end]` or `$.properties[:]`                  | Selects array elements from the start index and up to, but not including, end index. If end is omitted, selects all elements from start until the end of the array. Returns a list|
+| `$.properties[*]`                           | Select all objects in properties the result will be flatenned list  |
+| `$.properties[@.length-n]`                | Select the length-n th elements from array                    |
+| `$.properties[?(expression)]`              | Filter expression. Select all elements in array that match the specified filter|
 
 
 Below are the supported filter expression
@@ -31,7 +31,8 @@ Below are the supported filter expression
 | >=                  | Greater equal than                                      |
 | <                   | Less than                                               |
 | <=                  | Less equal than                                         |
+| &#124;&#124;        | Logical or                                              |
 | &&                  | Logical and                                             |
-| ||                  | Logical or                                              |
+
 
 Currently this library haven't supported regex expression filtering
