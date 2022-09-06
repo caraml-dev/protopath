@@ -41,7 +41,11 @@ func NewJsonPathCompiler(jsonpath string) (*Compiled, error) {
 }
 
 // Lookup run all the compiled operation based on the jsonpath syntax given proto message obj
-// Return of this method not necessary is proto message it can be anything
+// Return of this method not necessary is proto message it can be
+// 1. proto.Message
+// 2. primitive value
+// 3. slice of proto.Message
+// 4. slice of pritimive values
 func (c *Compiled) Lookup(ctx context.Context, obj proto.Message) (any, error) {
 	var res any = obj
 	var err error
