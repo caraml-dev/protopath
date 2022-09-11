@@ -9,6 +9,7 @@ import (
 	samplev1 "github.com/caraml-dev/protopath/internal/gen/sample/v1"
 
 	upiV1 "github.com/caraml-dev/universal-prediction-interface/gen/go/grpc/caraml/upi/v1"
+	jp "github.com/gojekfarm/jsonpath"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/proto"
@@ -922,5 +923,113 @@ func TestCompiler_Lookup(t *testing.T) {
 			}
 			assertValueEquality(t, tt.want, got)
 		})
+	}
+}
+
+/*
+goos: darwin
+goarch: amd64
+pkg: github.com/caraml-dev/protopath
+cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+BenchmarkLookup_Protopath-16    	  477495	      2425 ns/op	     640 B/op	      25 allocs/op
+*/
+func BenchmarkLookup_Protopath(b *testing.B) {
+	path := "$.prediction_rows[*].model_inputs[?(@.name == 'rating')]"
+	obj := &upiV1.PredictValuesRequest{
+		TargetName: "target_name",
+		Metadata: &upiV1.RequestMetadata{
+			PredictionId: "predictionID",
+		},
+		PredictionRows: []*upiV1.PredictionRow{
+			{
+				RowId: "id-1",
+				ModelInputs: []*upiV1.NamedValue{
+					{
+						Name:        "rating",
+						Type:        upiV1.NamedValue_TYPE_DOUBLE,
+						DoubleValue: float64(4.2),
+					},
+					{
+						Name:        "acceptance_rate",
+						Type:        upiV1.NamedValue_TYPE_DOUBLE,
+						DoubleValue: float64(0.8),
+					},
+				},
+			},
+			{
+				RowId: "id-2",
+				ModelInputs: []*upiV1.NamedValue{
+					{
+						Name:        "rating",
+						Type:        upiV1.NamedValue_TYPE_DOUBLE,
+						DoubleValue: float64(4.4),
+					},
+					{
+						Name:        "acceptance_rate",
+						Type:        upiV1.NamedValue_TYPE_DOUBLE,
+						DoubleValue: float64(0.9),
+					},
+				},
+			},
+		},
+	}
+
+	compiler, _ := NewJsonPathCompiler(path)
+	for i := 0; i < b.N; i++ {
+		compiler.Lookup(context.Background(), obj)
+	}
+}
+
+/*
+goos: darwin
+goarch: amd64
+pkg: github.com/caraml-dev/protopath
+cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+BenchmarkLookup_Jsonpath-16    	   82851	     14048 ns/op	   11616 B/op	     201 allocs/op
+*/
+func BenchmarkLookup_Jsonpath(b *testing.B) {
+	path := "$.prediction_rows[*].model_inputs[?(@.name == 'rating')]"
+	obj := map[string]interface{}{
+		"target_name": "target_name",
+		"metadata": map[string]interface{}{
+			"prediction_id": "predictionID",
+		},
+		"prediction_rows": []interface{}{
+			map[string]interface{}{
+				"row_id": "id-1",
+				"model_inputs": []interface{}{
+					map[string]interface{}{
+						"name":         "rating",
+						"type":         "TYPE_DOUBLE",
+						"double_value": float64(3.2),
+					},
+					map[string]interface{}{
+						"name":         "acceptance_rate",
+						"type":         "TYPE_DOUBLE",
+						"double_value": float64(0.8),
+					},
+				},
+			},
+			map[string]interface{}{
+				"row_id": "id-2",
+				"model_inputs": []interface{}{
+					map[string]interface{}{
+						"name":         "rating",
+						"type":         "TYPE_DOUBLE",
+						"double_value": float64(4.4),
+					},
+					map[string]interface{}{
+						"name":         "acceptance_rate",
+						"type":         "TYPE_DOUBLE",
+						"double_value": float64(0.9),
+					},
+				},
+			},
+		},
+	}
+	compiled, _ := jp.Compile(path)
+
+	for i := 0; i < b.N; i++ {
+		compiled.Lookup(obj)
 	}
 }

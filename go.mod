@@ -7,6 +7,8 @@ require (
 	github.com/caraml-dev/universal-prediction-interface v0.0.0-20220817062131-86a1e548d096
 	github.com/stretchr/testify v1.7.0
 	google.golang.org/protobuf v1.28.1
+		github.com/gojekfarm/jsonpath v0.1.1
+
 )
 
 require (
